@@ -2,8 +2,6 @@
  * @brief Implementation of ttys module.
  */
 
-#if !defined(OS_USE_SEMIHOSTING)
-
 #include "shell.h"
 
 //=============================================================================
@@ -71,7 +69,7 @@ int32_t ttys_init(enum ttys_instance_id instance_id, struct ttys_cfg* cfg)
 {
     IRQn_Type irq_type;
 
-	// Input checking:
+    // Input checking:
     if (instance_id >= TTYS_NUM_INSTANCES)
         return SHELL_ERR_BAD_INSTANCE;
 
@@ -136,7 +134,7 @@ int32_t ttys_init(enum ttys_instance_id instance_id, struct ttys_cfg* cfg)
 
 int32_t ttys_putc(enum ttys_instance_id instance_id, char c)
 {
-	if (instance_id >= TTYS_NUM_INSTANCES)
+    if (instance_id >= TTYS_NUM_INSTANCES)
         return SHELL_ERR_BAD_INSTANCE;
 
     struct ttys_state* state = &ttys_states[instance_id];
@@ -155,9 +153,8 @@ int32_t ttys_putc(enum ttys_instance_id instance_id, char c)
     state->tx_buf_put_idx = next_put_idx;
 
     // Ensure the TX interrupt is enabled
-	if (ttys_states[instance_id].uart_reg_base != NULL) {
-		ATOMIC_SET_BIT(state->uart_reg_base->CR1, USART_CR1_TXEIE);
-	}
+    if (ttys_states[instance_id].uart_reg_base != NULL)
+	ATOMIC_SET_BIT(state->uart_reg_base->CR1, USART_CR1_TXEIE);
 
     return 0;
 }
@@ -213,7 +210,7 @@ FILE* ttys_get_stream(enum ttys_instance_id instance_id)
 
 void USART1_IRQHandler(void)
 {
-	ttys_interrupt(TTYS_INSTANCE_UART1, USART1_IRQn);
+    ttys_interrupt(TTYS_INSTANCE_UART1, USART1_IRQn);
 }
 
 // Uncomment and modify for all the available USARTs:
@@ -229,7 +226,7 @@ void USART1_IRQHandler(void)
 static void ttys_interrupt(enum ttys_instance_id instance_id,
                            IRQn_Type irq_type)
 {
-	struct ttys_state* state = &ttys_states[instance_id];
+    struct ttys_state* state = &ttys_states[instance_id];
 
     uint32_t isr = state->uart_reg_base->ISR;
 
@@ -237,18 +234,16 @@ static void ttys_interrupt(enum ttys_instance_id instance_id,
         // Got an incoming character.
     	char rx_data = state->uart_reg_base->RDR;
 
-		// Check RX buffer isn't full
-		if ((state->rx_buf_put_idx + 1) != state->rx_buf_get_idx) {
-			state->rx_buf[state->rx_buf_put_idx] = rx_data;
-			state->rx_buf_put_idx++;
-			if (state->rx_buf_put_idx >= TTYS_RX_BUF_SIZE)
-				state->rx_buf_put_idx = 0;
-		} else {
-			Error_Handler();
-		}
-    }
-
-    else if (isr & USART_ISR_TXE) {
+	// Check RX buffer isn't full
+	if ((state->rx_buf_put_idx + 1) != state->rx_buf_get_idx) {
+	    state->rx_buf[state->rx_buf_put_idx] = rx_data;
+	    state->rx_buf_put_idx++;
+	    if (state->rx_buf_put_idx >= TTYS_RX_BUF_SIZE)
+		state->rx_buf_put_idx = 0;
+	} else {
+	    Error_Handler();
+	}
+    } else if (isr & USART_ISR_TXE) {
         // Can send a character.
         if (state->tx_buf_get_idx == state->tx_buf_put_idx) {
             // No characters to send, disable the interrrupt
@@ -259,13 +254,10 @@ static void ttys_interrupt(enum ttys_instance_id instance_id,
             if (state->tx_buf_get_idx >= TTYS_TX_BUF_SIZE)
                 state->tx_buf_get_idx = 0;
         }
-    }
-
-    else if (isr & (USART_ISR_ORE | USART_ISR_NE |
-    		       USART_ISR_FE | USART_ISR_PE)) {
+    } else if (isr & (USART_ISR_ORE | USART_ISR_NE |
+    		      USART_ISR_FE | USART_ISR_PE)) {
         // Error conditions. To clear the bit, we need to read the data
         // register, but we don't use it.
-
         (void)state->uart_reg_base->RDR;
     }
 }
@@ -321,7 +313,7 @@ static enum ttys_instance_id fd_to_instance(int fd)
  */
 int _write(int file, char* ptr, int len)
 {
-	int idx;
+    int idx;
     enum ttys_instance_id instance_id = fd_to_instance(file);
 
     if (instance_id >= TTYS_NUM_INSTANCES) {
