@@ -367,6 +367,3 @@ int _read(int file, char* ptr, int len)
 
     return rc;
 }
-
-
-#endif /* #if !defined(OS_USE_SEMIHOSTING) */
