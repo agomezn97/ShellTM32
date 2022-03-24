@@ -38,7 +38,7 @@ static struct cmd_info cmds[] = {
 
 static int32_t log_level = LOG_DEFAULT;
 
-static struct cmd_client_info cmd_info = {
+static struct cmd_client_info client_info = {
     .name = "dio",
     .num_cmds = ARRAY_SIZE(cmds),
     .cmds = cmds,
@@ -73,7 +73,7 @@ int32_t dio_init(struct dio_cfg* _cfg)
     }
 
     // Register the commands in the cmd module
-    int32_t result = cmd_register(&cmd_info);
+    int32_t result = cmd_register(&client_info);
     if (result < 0) {
 	    log_error("dio_start: cmd error %d\n", result);
 	    return SHELL_ERR_RESOURCE;
