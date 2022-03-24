@@ -1,8 +1,11 @@
 # ShellTM32
 
-ShellTM32 is a console-based command-line shell that allows users to interface with STM32 devices. In order to do that, user's modules can register their own set of commands to the shell. The shell's job is to create a serial connection with the host PC in order to accept commands, interpret them, and issue them to the appropriate module. The user can optionally assign a log level to each module and make use of the shell's logging capability.
+ShellTM32 is a console-based command-line shell that allows users to interface with STM32 devices. In order to do that, user's modules can register their own set of commands to the shell. The shell's job is to create a serial connection with the host PC in order to accept commands, interpret them, and issue them to the appropriate module. The user can optionally assign a log level to each module and make use of the shell's logging capability. The shell is integrated in the stdio API, meaning that you can use printf to print messages in the console.
+
+![console](https://user-images.githubusercontent.com/76229651/159970916-b0cc099a-019c-4ed7-b184-de59f812c1d2.png)
 
 ShellTM32 is currently targeted for bare-metal applications, although an RTOS port is on the way. I'll also include the option of communicating with the shell over Ethernet.
+
 
 ## Usage
 Using ShellTM32 is very easy! You can check the example folder to see the integration of a dio (digital I/O) module into the shell.
