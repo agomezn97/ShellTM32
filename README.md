@@ -4,7 +4,7 @@ ShellTM32 is a console-based command-line shell that allows users to interface w
 
 ![console](https://user-images.githubusercontent.com/76229651/159970916-b0cc099a-019c-4ed7-b184-de59f812c1d2.png)
 
-ShellTM32 is currently targeted for bare-metal applications, although an RTOS port is on the way. I'll also include the option of communicating with the shell over Ethernet.
+The option of communicating with the shell over Ethernet is on the way.
 
 
 ## Usage
