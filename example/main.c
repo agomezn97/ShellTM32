@@ -89,21 +89,9 @@ int main(void)
 	MX_USART1_UART_Init();
 
 	/* Shell Initialization */
-	struct console_cfg console_cfg;
-	struct ttys_cfg ttys_cfg;
+	shell_init(TTYS_INSTANCE_UART1);
 
-	// TTYS init
-	ttys_get_default_cfg(TTYS_INSTANCE_UART1, &ttys_cfg);
-	ttys_init(TTYS_INSTANCE_UART1, &ttys_cfg);
-
-	// CMD init
-	cmd_init(NULL);
-
-	// Console init
-	console_get_default_cfg(&console_cfg);
-	console_init(&console_cfg);
-
-	// DIO init
+	/* DIO init */
 	dio_init(&dio_cfg);
 
 	printf("Entering super loop\n");
