@@ -43,5 +43,14 @@
 // Get size of an array.
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
+/**
+ * @brief Shell initialization function
+ *
+ * @param[in] ttys_instance The ttys instance used for transmission. See the
+ * enum for more details.
+ *
+ * @return 0 for success, else a "ERR" value. See code for details.
+ */
+uint32_t shell_init(enum ttys_instance_id ttys_instance);
 
 #endif /* _SHELL_H_ */
